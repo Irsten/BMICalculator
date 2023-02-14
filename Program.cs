@@ -1,11 +1,15 @@
+using BMICalculator.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IBmiCalculationService, BmiCalculationService>();
 
 var app = builder.Build();
-
+//https://localhost:7001
+//https://localhost:44419
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

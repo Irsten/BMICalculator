@@ -13,10 +13,10 @@ export default function Home() {
   const numberRegex = new RegExp(/^[1-9]\d*$/);
 
   const handleChangeUnitSystem = (e) => {
-    if (e.target.value === '1') {
-      setUnitSystem('Metric');
-    } else if (e.target.value === '2') {
-      setUnitSystem('Imperial');
+    if (e.target.value === 1) {
+      setUnitSystem(1);
+    } else if (e.target.value === 2) {
+      setUnitSystem(2);
     }
   };
 
@@ -58,8 +58,8 @@ export default function Home() {
               id='unitSystem'
               onChange={(e) => handleChangeUnitSystem(e)}
             >
-              <option value='1'>Metric</option>
-              <option value='2'>Imperial</option>
+              <option value={1}>Metric</option>
+              <option value={2}>Imperial</option>
             </select>
             <label htmlFor='unitSystem'>Unit system</label>
           </div>
@@ -85,7 +85,7 @@ export default function Home() {
               className='input-group-text'
               style={{ width: 45, maxHeight: 58 }}
             >
-              {unitSystem === 'Metric' ? 'kg' : 'lbs'}
+              {unitSystem === 1 ? 'kg' : 'lbs'}
             </span>
           </div>
 
@@ -111,7 +111,7 @@ export default function Home() {
               className='input-group-text'
               style={{ width: 45, maxHeight: 58 }}
             >
-              {unitSystem === 'Metric' ? 'cm' : 'in'}
+              {unitSystem === 1 ? 'cm' : 'in'}
             </span>
           </div>
           <button
