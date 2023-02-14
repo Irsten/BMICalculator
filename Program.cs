@@ -4,12 +4,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCors(options => options.AddPolicy("MyPDFToolsApi",
+    policy => policy
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .WithExposedHeaders("Content-Disposition")
+    ));
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IBmiCalculationService, BmiCalculationService>();
 
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseCors("MyPDFToolsApi");
+
 //https://localhost:7001
 //https://localhost:44419
 // Configure the HTTP request pipeline.

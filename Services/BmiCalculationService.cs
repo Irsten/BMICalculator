@@ -16,7 +16,7 @@
 
         public double ImperialCalculate(double weight, double height)
         {
-            double result = weight / ((height * 0.01) * (height * 0.01)) * 703;
+            double result = 703 * weight / (height * height);
             return result;
         }
     }

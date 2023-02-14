@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 export default function Home() {
-  const [unitSystem, setUnitSystem] = useState('Metric');
-  const [weight, setWeight] = useState('');
-  const [height, setHeight] = useState('');
-  const [result, setResult] = useState('TEST');
+  const [unitSystem, setUnitSystem] = useState(1);
+  const [weight, setWeight] = useState(0);
+  const [height, setHeight] = useState(0);
+  const [bmi, setBmi] = useState('');
+  const [bmiClassification, setBmiClassification] = useState('');
+  const [summary, setSummary] = useState('');
 
   const [isWeightValid, setIsWeightValid] = useState(true);
   const [isHeightValid, setIsHeightValid] = useState(true);
@@ -13,14 +15,16 @@ export default function Home() {
   const numberRegex = new RegExp(/^[1-9]\d*$/);
 
   const handleChangeUnitSystem = (e) => {
-    if (e.target.value === 1) {
+    console.log(e.target.value);
+    if (e.target.value === '1') {
       setUnitSystem(1);
-    } else if (e.target.value === 2) {
+    } else if (e.target.value === '2') {
       setUnitSystem(2);
     }
   };
 
   const handleChangeWeight = (e) => {
+    console.log(unitSystem);
     e.preventDefault();
     if (numberRegex.test(e.target.value) === false) {
       setIsWeightValid(false);
@@ -44,6 +48,20 @@ export default function Home() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    try {
+      axios
+        .post('https://localhost:7001/calculate', {
+          unitSystem,
+          weight,
+          height,
+        })
+        .then((response) => {
+          console.log(response.data.Bmi);
+          setBmi(response.data.Bmi);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -52,6 +70,7 @@ export default function Home() {
         <h4>Enter values and check your BMI</h4>
         <hr style={{ width: 400 }} />
         <form onSubmit={handleFormSubmit} style={{ width: 400 }}>
+          {/* Selector */}
           <div className='form-floating mb-3'>
             <select
               className='form-floating form-select mb-3'
@@ -63,6 +82,7 @@ export default function Home() {
             </select>
             <label htmlFor='unitSystem'>Unit system</label>
           </div>
+          {/* Weight input */}
           <div className='input-group mb-3'>
             <div className='form-floating' style={{ width: 355 }}>
               <input
@@ -85,10 +105,10 @@ export default function Home() {
               className='input-group-text'
               style={{ width: 45, maxHeight: 58 }}
             >
-              {unitSystem === 1 ? 'kg' : 'lbs'}
+              {unitSystem !== 2 ? 'kg' : 'lbs'}
             </span>
           </div>
-
+          {/* Height input */}
           <div className='input-group mb-3'>
             <div className='form-floating' style={{ width: 355 }}>
               <input
@@ -111,7 +131,7 @@ export default function Home() {
               className='input-group-text'
               style={{ width: 45, maxHeight: 58 }}
             >
-              {unitSystem === 1 ? 'cm' : 'in'}
+              {unitSystem !== 2 ? 'cm' : 'in'}
             </span>
           </div>
           <button
@@ -128,8 +148,8 @@ export default function Home() {
         <hr />
         <div className='row align-items-center m-1 fw-semibold'>
           Your BMI: &nbsp;
-          <label className='form-control' style={{ width: 400 }}>
-            {result}
+          <label className='form-control' style={{ width: 400, height: 40 }}>
+            {bmi}
           </label>
         </div>
       </div>

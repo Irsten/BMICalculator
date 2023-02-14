@@ -1,6 +1,7 @@
 ﻿using BMICalculator.Models;
 using BMICalculator.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace BMICalculator.Controllers
 {
@@ -28,14 +29,32 @@ namespace BMICalculator.Controllers
                 bmi = _bmiCalculationService.MetricCalculate(userData.Weight, userData.Height);
                 bmiClassification = GetBmiClassification(bmi);
                 summary = GetSummary(bmiClassification);
-                return Ok(bmi);
+
+                var resultObj = new BmiResult()
+                { 
+                    Bmi = bmi,
+                    BmiClassification = bmiClassification,
+                    Summary = summary 
+                };
+                var resultJSON = JsonSerializer.Serialize(resultObj);
+
+                return Ok(resultJSON);
             }
             else
             {
                 bmi = _bmiCalculationService.ImperialCalculate(userData.Weight, userData.Height);
                 bmiClassification = GetBmiClassification(bmi);
                 summary = GetSummary(bmiClassification);
-                return Ok(new BmiResult() { Bmi = bmi, BmiClassification = bmiClassification, Summary = summary});
+
+                var resultObj = new BmiResult()
+                { 
+                    Bmi = bmi,
+                    BmiClassification = bmiClassification,
+                    Summary = summary
+                };
+                var resultJSON = JsonSerializer.Serialize(resultObj);
+
+                return Ok(resultJSON);
             }
         }
 
