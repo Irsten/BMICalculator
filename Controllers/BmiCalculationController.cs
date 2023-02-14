@@ -13,25 +13,26 @@ namespace BMICalculator.Controllers
             _bmiCalculationService = bmiCalculationService;
         }
 
-        [HttpPost]
-        public ActionResult<BmiResult> Calculate([FromBody] int unitSystem, [FromBody] double weight, [FromBody] double height)
+        [HttpPost("calculate")]
+        public ActionResult<UserData> Calculate([FromBody] UserData userData)
         {
             double bmi;
             BmiClassification bmiClassification;
             string summary;
 
-            if (weight < 1) { return BadRequest("Weight is not a valid number"); }
-            if (weight < 1) { return BadRequest("Height is not a valid number"); }
+            if (userData.Weight < 1) { return BadRequest("Weight is not a valid number"); }
+            if (userData.Height < 1) { return BadRequest("Height is not a valid number"); }
 
-            if (unitSystem == 1)
+            if (userData.UnitSystem == 1)
             {
-                bmi = _bmiCalculationService.MetricCalculate(weight, height);
+                bmi = _bmiCalculationService.MetricCalculate(userData.Weight, userData.Height);
                 bmiClassification = GetBmiClassification(bmi);
+                summary = GetSummary(bmiClassification);
                 return Ok(bmi);
             }
             else
             {
-                bmi = _bmiCalculationService.ImperialCalculate(weight, height);
+                bmi = _bmiCalculationService.ImperialCalculate(userData.Weight, userData.Height);
                 bmiClassification = GetBmiClassification(bmi);
                 summary = GetSummary(bmiClassification);
                 return Ok(new BmiResult() { Bmi = bmi, BmiClassification = bmiClassification, Summary = summary});

@@ -10,13 +10,13 @@
     {
         public double MetricCalculate(double weight, double height)
         {
-            double result = weight / (height * height);
+            double result = weight / ((height * 0.01) * (height * 0.01));
             return result;
         }
 
         public double ImperialCalculate(double weight, double height)
         {
-            double result = weight / (height * height) * 703;
+            double result = weight / ((height * 0.01) * (height * 0.01)) * 703;
             return result;
         }
     }

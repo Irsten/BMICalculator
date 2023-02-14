@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IBmiCalculationService, BmiCalculationService>();
 
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 //https://localhost:7001
 //https://localhost:44419
@@ -18,6 +20,11 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "BMICalculator API");
+});
 app.UseStaticFiles();
 app.UseRouting();
 
