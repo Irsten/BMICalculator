@@ -97,12 +97,12 @@ namespace BMICalculator.Controllers
         private BmiClassification GetBmiClassification(double bmi)
         {
             if (bmi <= 16) { return BmiClassification.ExtremeUnderweight; }
-            else if (bmi > 16 || bmi <= 17 ) { return BmiClassification.Underweight; }
-            else if (bmi > 17 || bmi <= 18.5) { return BmiClassification.SlightlyUnderweight; }
-            else if (bmi > 18.5 || bmi <= 25) { return BmiClassification.Normal; }
-            else if (bmi > 25 || bmi <= 30) { return BmiClassification.Overweight; }
-            else if (bmi > 30 || bmi <= 35) { return BmiClassification.ObesityClassI; }
-            else if (bmi > 35 || bmi <= 40) { return BmiClassification.ObesityClassII; }
+            else if (bmi > 16 && bmi <= 17 ) { return BmiClassification.Underweight; }
+            else if (bmi > 17 && bmi <= 18.5) { return BmiClassification.SlightlyUnderweight; }
+            else if (bmi > 18.5 && bmi <= 25) { return BmiClassification.Normal; }
+            else if (bmi > 25 && bmi <= 30) { return BmiClassification.Overweight; }
+            else if (bmi > 30 && bmi <= 35) { return BmiClassification.ObesityClassI; }
+            else if (bmi > 35 && bmi <= 40) { return BmiClassification.ObesityClassII; }
             else { return BmiClassification.ObesityClassIII; }
         }
     }

@@ -12,7 +12,7 @@ export default function Home() {
   const [isWeightValid, setIsWeightValid] = useState(true);
   const [isHeightValid, setIsHeightValid] = useState(true);
 
-  const numberRegex = new RegExp(/^[1-9]\d*$/);
+  const numberRegex = new RegExp(/^(\d*\.)?\d+$/);
 
   const handleChangeUnitSystem = (e) => {
     console.log(e.target.value);
@@ -45,6 +45,38 @@ export default function Home() {
       console.log(e.target.value);
     }
   };
+  const handleBmiClassification = (e) => {
+    //setBmiClassification(e);
+
+    switch (e) {
+      case 0:
+        setBmiClassification('(Extreme Underweight)');
+        break;
+      case 1:
+        setBmiClassification('(Underweight)');
+        break;
+      case 2:
+        setBmiClassification('(Slightly Underweight)');
+        break;
+      case 3:
+        setBmiClassification('(Normal)');
+        break;
+      case 4:
+        setBmiClassification('(Overweight)');
+        break;
+      case 5:
+        setBmiClassification('(Obesity Class I)');
+        break;
+      case 6:
+        setBmiClassification('(Obesity Class II)');
+        break;
+      case 7:
+        setBmiClassification('(Obesity Class III)');
+        break;
+      default:
+        break;
+    }
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -56,8 +88,12 @@ export default function Home() {
           height,
         })
         .then((response) => {
-          console.log(response.data.Bmi);
+          console.log(response.data);
+          const classification = response.data.BmiClassification;
+          console.log(typeof classification);
           setBmi(response.data.Bmi);
+          handleBmiClassification(classification);
+          setSummary(response.data.Summary);
         });
     } catch (error) {
       console.log(error);
@@ -97,7 +133,7 @@ export default function Home() {
               <label htmlFor='weight'>Weight</label>
               {!isWeightValid && (
                 <div className='invalid-feedback'>
-                  Only positive numbers can be passed
+                  Weight must be a positive number greater than 1
                 </div>
               )}
             </div>
@@ -123,7 +159,7 @@ export default function Home() {
               <label htmlFor='height'>Height</label>
               {!isHeightValid && (
                 <div className='invalid-feedback'>
-                  Only positive numbers can be passed
+                  Height must be a positive number greater than 1
                 </div>
               )}
             </div>
@@ -143,14 +179,15 @@ export default function Home() {
           </button>
         </form>
       </div>
-      <div className='col' style={{ width: 400, padding: 10 }}>
+      <div className='col' style={{ width: 600, padding: 10 }}>
         <h4>Result</h4>
         <hr />
         <div className='row align-items-center m-1 fw-semibold'>
           Your BMI: &nbsp;
           <label className='form-control' style={{ width: 400, height: 40 }}>
-            {bmi}
+            {bmi} {bmiClassification}
           </label>
+          <div className='p-0'>{summary}</div>
         </div>
       </div>
     </div>
